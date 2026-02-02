@@ -62,7 +62,7 @@ void main() {
   print("Nilai Mata Kuliah:");
   nilai.forEach((key, value) {
     print("$key : $value");
-  });
+  }); 
   print("");
 
   // 9. Method / Function
