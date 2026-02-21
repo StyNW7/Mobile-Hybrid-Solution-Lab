@@ -66,6 +66,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
   }
 
   void _submitForm() {
+    
     if (_formKey.currentState!.validate() && _agree && _selectedDate != null) {
       setState(() {
         students.add(
@@ -83,7 +84,9 @@ class _StudentFormPageState extends State<StudentFormPage> {
       );
 
       _nameController.clear();
-    } else {
+    }
+    
+    else {
       showDialog(
         context: context,
         builder: (context) => const AlertDialog(
@@ -92,6 +95,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
         ),
       );
     }
+
   }
 
   void _showStudentDetail(Student student) {
@@ -111,10 +115,15 @@ class _StudentFormPageState extends State<StudentFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(title: const Text("Student Registration")),
+
       body: SingleChildScrollView(
+
         padding: const EdgeInsets.all(16),
+
         child: Column(
+
           children: [
 
             /// ================= FORM =================
@@ -223,8 +232,11 @@ class _StudentFormPageState extends State<StudentFormPage> {
                     onPressed: _submitForm,
                     child: const Text("Submit"),
                   ),
+
                 ],
+
               ),
+
             ),
 
             const SizedBox(height: 30),
@@ -272,6 +284,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
                 );
               },
             ),
+
           ],
         ),
       ),
