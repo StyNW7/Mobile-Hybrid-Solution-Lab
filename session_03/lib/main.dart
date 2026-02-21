@@ -10,11 +10,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, // Kasih ini biar ga keliatan app-nya masih debug
       home: StudentFormPage(),
     );
   }
 }
+
+// Buat Class Studenti
 
 class Student {
   final String name;
@@ -85,6 +87,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
       );
 
       _nameController.clear();
+      
     }
     
     else {
