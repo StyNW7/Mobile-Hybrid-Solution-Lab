@@ -38,6 +38,7 @@ class StudentFormPage extends StatefulWidget {
 }
 
 class _StudentFormPageState extends State<StudentFormPage> {
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
@@ -126,7 +127,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
           children: [
 
-            /// ================= FORM =================
+            /// ================= FORM ================= (Flutter Form Widget)
             Form(
               key: _formKey,
               child: Column(
