@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Buat Class Studenti
+// Buat Class Student (untuk template / blueprint ngebuat object nantinya)
 
 class Student {
   final String name;
@@ -32,6 +32,8 @@ class Student {
   });
 }
 
+// Ini sebenarnya bebas kalo mau rename ke StudentFormPage atau tetap default bawaan main.dart nya juga gpp
+
 class StudentFormPage extends StatefulWidget {
   const StudentFormPage({super.key});
 
@@ -40,6 +42,8 @@ class StudentFormPage extends StatefulWidget {
 }
 
 class _StudentFormPageState extends State<StudentFormPage> {
+
+  // Global variable and global state untuk nanti dipake di form-nya
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,6 +57,9 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
   List<Student> students = [];
 
+  // Function-function utama untuk nanti digunakan
+
+  // PickDate: Untuk milih tanggal di calendar nantinya dan set tanggal itu ke global variable kita
   void _pickDate() async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -68,6 +75,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
     }
   }
 
+  // SubmitForm: Function untuk submit form dan add student ke array global variable
   void _submitForm() {
     
     if (_formKey.currentState!.validate() && _agree && _selectedDate != null) {
@@ -102,6 +110,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
   }
 
+  // ShowStudentDetail: Function untuk ketika button ditekan dia showDialog
   void _showStudentDetail(Student student) {
     showDialog(
       context: context,
@@ -115,6 +124,8 @@ class _StudentFormPageState extends State<StudentFormPage> {
       ),
     );
   }
+
+  // Aplikasi yang kita buat
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +141,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
           children: [
 
-            /// ================= FORM ================= (Flutter Form Widget)
+            /// Form
             Form(
               key: _formKey,
               child: Column(
@@ -243,9 +254,11 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
             ),
 
+            // Ini kita udah keluar dari Form nya, sekarang kita belajar 2 repetitive container: ListView dan GridView
+
             const SizedBox(height: 30),
 
-            /// ================= LISTVIEW =================
+            /// ListView
             const Text(
               "Registered Students",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -269,7 +282,7 @@ class _StudentFormPageState extends State<StudentFormPage> {
 
             const SizedBox(height: 20),
 
-            /// ================= GRIDVIEW =================
+            /// GridView
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
