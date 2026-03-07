@@ -1,0 +1,17 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 3
+User Input Form and Validation, Repeating Container, and Dialog
+======================================================
+
+[] Flutter Form Widget
+[] Form Validation
+[] Flutter Repeating Container
+[] Flutter Dialog
+
+Notes:
+1. Ajarkan mengenai flutter form widget seperti: FormState, TextInput, CheckBox, DropDown, Switch, DatePicker, Slider
+2. Ajarkan mengenai flutter repeating container seperti: ListView, GridView
+3. Ajarkan mengenai flutter dialog seperti: AlertDialog, SnackBar

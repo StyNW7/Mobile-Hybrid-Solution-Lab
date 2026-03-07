@@ -1,0 +1,22 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 1
+Introduction to Dart and Flutter
+======================================================
+
+[] Dart Basics
+	[] Variable, Tipe Data, String Interpolation
+	[] Final and Const
+	[] Selection and Repetition
+	[] List, Set, Map, and Method
+[] Flutter Basics
+	[] Flutter Commands
+	[] Create Flutter Project
+	[] Flutter Project Structures
+	[] Run Flutter Project
+
+
+Notes:
+- Mempelajari basic dart and flutter overview

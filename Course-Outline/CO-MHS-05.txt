@@ -1,0 +1,14 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 5
+Image Carousel and Picker
+======================================================
+
+[] Image Widget
+[] Image Carousel
+[] Image Picker
+
+Notes:
+1. Ajarkan cara menampilkan image dari local file atau online file (website URL)
