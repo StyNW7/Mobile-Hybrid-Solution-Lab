@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 
 class ImagePage extends StatefulWidget {
   const ImagePage({super.key});
@@ -12,7 +15,11 @@ class ImagePage extends StatefulWidget {
 
 class _ImagePageState extends State<ImagePage> {
 
+  /// For Mobile
   File? _selectedImage;
+
+  /// For Web
+  Uint8List? _imageBytes;
 
   final List<String> imageList = [
     "assets/images/img1.jpg",
@@ -20,18 +27,46 @@ class _ImagePageState extends State<ImagePage> {
     "assets/images/img3.jpg",
   ];
 
-  final picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
 
   Future<void> pickImage() async {
-    final picked = await picker.pickImage(
+    final XFile? picked = await picker.pickImage(
       source: ImageSource.gallery,
     );
 
     if (picked != null) {
-      setState(() {
+
+      /// If running on Web
+      if (kIsWeb) {
+        _imageBytes = await picked.readAsBytes();
+      } 
+
+      /// If running on Mobile
+      else {
         _selectedImage = File(picked.path);
-      });
+      }
+
+      setState(() {});
     }
+  }
+
+  Widget showPickedImage() {
+
+    if (kIsWeb && _imageBytes != null) {
+      return Image.memory(
+        _imageBytes!,
+        height: 200,
+      );
+    }
+
+    if (_selectedImage != null) {
+      return Image.file(
+        _selectedImage!,
+        height: 200,
+      );
+    }
+
+    return const Text("No image selected");
   }
 
   @override
@@ -54,7 +89,7 @@ class _ImagePageState extends State<ImagePage> {
             const SizedBox(height: 10),
 
             Image.network(
-              "https://picsum.photos/300",
+              "https://picsum.photos/400/200",
               height: 200,
             ),
 
@@ -97,12 +132,7 @@ class _ImagePageState extends State<ImagePage> {
 
             const SizedBox(height: 10),
 
-            _selectedImage == null
-                ? const Text("No image selected")
-                : Image.file(
-                    _selectedImage!,
-                    height: 200,
-                  ),
+            showPickedImage(),
 
             const SizedBox(height: 10),
 
