@@ -7,6 +7,7 @@ app.use(express.json());
 
 /// Import routes
 const userRoutes = require('./routes/users');
+const indexRoutes = require('./routes/index');
 
 /// Base route
 app.get('/', (req, res) => {
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 
 /// Use routes
 app.use('/api/users', userRoutes);
+app.use('/api/test', indexRoutes);
 
 /// Run server
 app.listen(PORT, () => {
