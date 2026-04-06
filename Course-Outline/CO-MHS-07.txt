@@ -1,0 +1,15 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 7
+Introduction to Backend Development
+======================================================
+
+[] Creating Node JS Project using express-generator
+[] Express Project Structure
+[] JS & Node JS Basics
+[] Express Routing Basic
+
+Notes:
+Ajarkan cara melakukan routing dengan method GET dan POST
