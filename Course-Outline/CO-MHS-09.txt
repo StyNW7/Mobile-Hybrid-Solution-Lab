@@ -1,0 +1,16 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 9
+API Integration
+======================================================
+
+[] Request & Response
+[] Promise
+[] Middleware
+[] File Upload using Multer
+
+Notes:
+1. Ajarkan jenis-jenis response code yang biasa muncul seperti: 200, 400, 403, 404, dsb
+2. Ajarkan cara melakukan request dari aplikasi flutter
