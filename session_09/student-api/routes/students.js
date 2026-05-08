@@ -1,26 +1,9 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const db = require('../db');
 
 const router = express.Router();
 
-// Dummy database
-let students = [
-  {
-    id: 1,
-    name: 'Stanley',
-    major: 'Computer Science',
-    imageUrl: null,
-  },
-  {
-    id: 2,
-    name: 'Budi',
-    major: 'Information Systems',
-    imageUrl: null,
-  },
-];
-
-// Middleware logger sederhana
 const requestLogger = (req, res, next) => {
   console.log(`[${req.method}] ${req.originalUrl}`);
   next();
@@ -28,19 +11,15 @@ const requestLogger = (req, res, next) => {
 
 router.use(requestLogger);
 
-// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
   },
-
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + '-' + file.originalname;
-    cb(null, uniqueName);
+    cb(null, Date.now() + '-' + file.originalname);
   },
 });
 
-// File filter
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -56,90 +35,118 @@ const upload = multer({
   fileFilter,
 });
 
-// Simulasi Promise / async process
-const getStudentsAsync = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(students);
-    }, 500);
-  });
-};
-
 // GET all students
-router.get('/', async (req, res) => {
-  const data = await getStudentsAsync();
+router.get('/', async (req, res, next) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM students ORDER BY id DESC'
+    );
 
-  res.status(200).json({
-    message: 'Students fetched successfully',
-    data,
-  });
+    res.status(200).json({
+      message: 'Students fetched successfully',
+      data: rows,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 // GET student by ID
-router.get('/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const student = students.find((item) => item.id === id);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  if (!student) {
-    return res.status(404).json({
-      message: 'Student not found',
+    const [rows] = await db.query(
+      'SELECT * FROM students WHERE id = ?',
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        message: 'Student not found',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Student fetched successfully',
+      data: rows[0],
     });
+  } catch (error) {
+    next(error);
   }
-
-  res.status(200).json({
-    message: 'Student fetched successfully',
-    data: student,
-  });
 });
 
 // POST create student
-router.post('/', (req, res) => {
-  const { name, major } = req.body;
+router.post('/', async (req, res, next) => {
+  try {
+    const { name, major } = req.body;
 
-  if (!name || !major) {
-    return res.status(400).json({
-      message: 'Name and major are required',
+    if (!name || !major) {
+      return res.status(400).json({
+        message: 'Name and major are required',
+      });
+    }
+
+    const [result] = await db.query(
+      'INSERT INTO students (name, major) VALUES (?, ?)',
+      [name, major]
+    );
+
+    const [newStudent] = await db.query(
+      'SELECT * FROM students WHERE id = ?',
+      [result.insertId]
+    );
+
+    res.status(201).json({
+      message: 'Student created successfully',
+      data: newStudent[0],
     });
+  } catch (error) {
+    next(error);
   }
-
-  const newStudent = {
-    id: students.length + 1,
-    name,
-    major,
-    imageUrl: null,
-  };
-
-  students.push(newStudent);
-
-  res.status(201).json({
-    message: 'Student created successfully',
-    data: newStudent,
-  });
 });
 
-// POST upload student image
-router.post('/:id/upload', upload.single('image'), (req, res) => {
-  const id = Number(req.params.id);
-  const student = students.find((item) => item.id === id);
+// POST upload image
+router.post('/:id/upload', upload.single('image'), async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  if (!student) {
-    return res.status(404).json({
-      message: 'Student not found',
+    const [students] = await db.query(
+      'SELECT * FROM students WHERE id = ?',
+      [id]
+    );
+
+    if (students.length === 0) {
+      return res.status(404).json({
+        message: 'Student not found',
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: 'Image file is required',
+      });
+    }
+
+    const imageUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+
+    await db.query(
+      'UPDATE students SET image_url = ? WHERE id = ?',
+      [imageUrl, id]
+    );
+
+    const [updatedStudent] = await db.query(
+      'SELECT * FROM students WHERE id = ?',
+      [id]
+    );
+
+    res.status(200).json({
+      message: 'Image uploaded successfully',
+      data: updatedStudent[0],
     });
+  } catch (error) {
+    next(error);
   }
-
-  if (!req.file) {
-    return res.status(400).json({
-      message: 'Image file is required',
-    });
-  }
-
-  student.imageUrl = `http://localhost:3000/uploads/${req.file.filename}`;
-
-  res.status(200).json({
-    message: 'Image uploaded successfully',
-    data: student,
-  });
 });
 
 module.exports = router;
