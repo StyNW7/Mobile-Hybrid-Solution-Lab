@@ -20,10 +20,18 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+const path = require('path');
 
-  if (allowedTypes.includes(file.mimetype)) {
+const fileFilter = (req, file, cb) => {
+  const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+  const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+
+  const fileExtension = path.extname(file.originalname).toLowerCase();
+
+  const isMimeTypeValid = allowedMimeTypes.includes(file.mimetype);
+  const isExtensionValid = allowedExtensions.includes(fileExtension);
+
+  if (isMimeTypeValid || isExtensionValid) {
     cb(null, true);
   } else {
     cb(new Error('Only JPG, JPEG, and PNG files are allowed'), false);
