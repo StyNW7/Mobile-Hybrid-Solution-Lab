@@ -12,6 +12,9 @@ router.use(logger);
 // File diterima oleh Multer, lalu metadata file disimpan ke database.
 const upload = multer({
   storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 2 * 1024 * 1024, // max 2MB
+  },
 });
 
 // GET all students
@@ -104,11 +107,8 @@ router.post('/:id/upload', upload.single('image'), async (req, res, next) => {
       });
     }
 
-    // Demo version:
-    // Vercel tidak menyimpan file permanen.
-    // Jadi image_url diisi metadata nama file.
-    // Production ideal: upload ke Supabase Storage / Cloudinary.
-    const imageUrl = `Uploaded file: ${req.file.originalname}`;
+    const base64Image = req.file.buffer.toString('base64');
+    const imageUrl = `data:${req.file.mimetype};base64,${base64Image}`;
 
     const updateResult = await pool.query(
       `UPDATE students
@@ -119,12 +119,7 @@ router.post('/:id/upload', upload.single('image'), async (req, res, next) => {
     );
 
     res.status(200).json({
-      message: 'Image received successfully',
-      file: {
-        originalName: req.file.originalname,
-        mimeType: req.file.mimetype,
-        size: req.file.size,
-      },
+      message: 'Image uploaded successfully',
       data: updateResult.rows[0],
     });
   } catch (error) {
