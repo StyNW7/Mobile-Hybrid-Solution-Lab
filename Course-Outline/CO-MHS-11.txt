@@ -1,0 +1,14 @@
+Stanley Nathanael Wijaya, NW25-1
+
+Mobile Hybrid Solution - Lab
+
+COURSE OUTLINE - SESI 11
+Application Deployment
+======================================================
+
+[] Deploy Application to Cloud Service
+[] Basic Deployment Configuration
+
+Notes:
+1. Boleh menggunakan cloud service apapun yang tidak berbayar seperti: replit.com (harus register pakai email sendiri), idx.dev (bisa pakai akun gmail untuk register), dsb
+2. Ajarkan mengenai basic konfigurasi seperti: host, port, environment variable, dsb
